@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useDrag } from "react-dnd";
-import { faker } from "@faker-js/faker";
+import React, { useEffect, useState } from 'react';
+import { useDrag } from 'react-dnd';
+import { faker } from '@faker-js/faker';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Chat = ({
   type,
@@ -15,17 +16,17 @@ const Chat = ({
 
   const [{ opacity }, dragRef] = useDrag(
     () => ({
-      type: "chat",
+      type: 'chat',
       item: { id },
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.5 : 1,
       }),
     }),
-    []
+    [],
   );
 
   useEffect(() => {
-    return () => console.log("component unmount", id);
+    return () => console.log('component unmount', id);
   }, []);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const Chat = ({
         ref={dragRef}
         style={{ opacity }}
       >
-        <div>chat icon</div>
+        <FontAwesomeIcon icon="fa-regular fa-message" />
       </div>
     );
 
@@ -53,9 +54,6 @@ const Chat = ({
       ref={dragRef}
       style={{ opacity }}
     >
-      <span>
-        chat {id} isIcon = {isIcon ? "yes" : "no"}
-      </span>
       {messages.length === 0 ? (
         <div>Loading...</div>
       ) : (

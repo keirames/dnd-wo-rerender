@@ -1,11 +1,12 @@
-import { atom, useAtom } from "jotai";
-import React, { useState } from "react";
-import Chat from "../widgets/chat";
-import Bar from "./bar";
-import Box from "./box";
+import { atom, useAtom } from 'jotai';
+import React, { useState } from 'react';
+import Chat from '../widgets/chat';
+import Bar from './bar';
+import Box from './box';
+import PortalBox from './portal-box';
 
 const mainBucket = atom<any[]>([
-  { id: "1", component: <Chat id="1" type="chat" key={1} /> },
+  { id: '1', component: <Chat id="1" type="chat" key={1} /> },
 ]);
 
 const barBucket = atom<any[]>([]);
@@ -21,6 +22,7 @@ const DragContainer = () => {
       <div className="pt-8 flex flex-row justify-around items-center">
         <Bar />
         <Box id="1" />
+        <PortalBox />
       </div>
     </div>
   );

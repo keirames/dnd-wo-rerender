@@ -1,6 +1,6 @@
-import React from "react";
-import { useDrop } from "react-dnd";
-import { useBarBucket, useMainBucket } from "./drag-container";
+import React from 'react';
+import { useDrop } from 'react-dnd';
+import { useBarBucket, useMainBucket } from './drag-container';
 
 const Bar: React.FC = () => {
   const [barBucket, setBarBucket] = useBarBucket();
@@ -9,7 +9,7 @@ const Bar: React.FC = () => {
 
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
-      accept: ["chat"],
+      accept: ['chat'],
       collect: (monitor) => ({
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
@@ -26,7 +26,7 @@ const Bar: React.FC = () => {
         ]);
       },
     }),
-    [barBucket, mainBucket]
+    [barBucket, mainBucket],
   );
 
   return (
@@ -35,8 +35,9 @@ const Bar: React.FC = () => {
       // style={{ backgroundColor: isOver ? "red" : "white" }}
       ref={dropRef}
     >
-      <span>{canDrop ? "Release to drop" : "Drag a box here"}</span>
+      <span>{canDrop ? 'Release to drop' : 'Drag a box here'}</span>
       {barBucket.map((i) => i.component)}
+      <div id="very-unique-id"></div>
     </div>
   );
 };
