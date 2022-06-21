@@ -1,10 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { useDrag } from "react-dnd";
 import { faker } from "@faker-js/faker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { nanoid } from "nanoid";
+import React, { useEffect, useState, useMemo } from "react";
+import { useDrag } from "react-dnd";
+import * as portals from "react-reverse-portal";
+import { useNode } from "../drag-view/drag-container";
 
-const Chat = ({
+export const PortalWrapper = () => {
+  const portalNode = useMemo(() => portals.createHtmlPortalNode(), []);
+
+  const [_, setNode] = useNode();
+
+  useEffect(() => {
+    setNode(portalNode);
+  }, []);
+
+  return (
+    <portals.InPortal node={portalNode}>
+      <EnhancedChat type="enhanced-chat" id="3" />
+    </portals.InPortal>
+  );
+};
+
+const EnhancedChat = ({
   type,
   id,
   isIcon = false,
@@ -17,7 +35,7 @@ const Chat = ({
 
   const [{ opacity }, dragRef] = useDrag(
     () => ({
-      type: "chat",
+      type,
       item: { id },
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.5 : 1,
@@ -25,10 +43,6 @@ const Chat = ({
     }),
     []
   );
-
-  useEffect(() => {
-    return () => console.log("component unmount", id);
-  }, []);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -68,4 +82,4 @@ const Chat = ({
   );
 };
 
-export default Chat;
+export default EnhancedChat;

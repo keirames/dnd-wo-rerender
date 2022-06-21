@@ -1,25 +1,42 @@
-import React, { useRef } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useEffect, useRef } from "react";
+import { useDrop } from "react-dnd";
+import ReactDOM from "react-dom";
+import EnhancedChat, { PortalWrapper } from "../widgets/enhanced-chat";
+import { useIconBucket, useNode } from "./drag-container";
+import * as portals from "react-reverse-portal";
 
 const PortalBox: React.FC = () => {
-  const el = useRef();
+  const [node] = useNode();
 
-  const target = document.querySelector('#very-unique-id');
-  console.log('target', target);
-  console.log('outside', document.querySelector('#outside'));
+  const [iconBucket, setIconBucket] = useIconBucket();
 
-  if (!el.current) return null;
-
-  return ReactDOM.createPortal(
-    <div>hehe</div>,
-    document.querySelector('#outside')!,
+  const [{ isOver, canDrop }, dropRef] = useDrop(
+    () => ({
+      accept: ["enhanced-chat"],
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+      }),
+      drop(interactedItem: any, monitor) {
+        if (iconBucket.find((i) => i === "enhanced-chat")) {
+          setIconBucket((prev) => prev.filter((i) => i !== "enhanced-chat"));
+        }
+        return;
+      },
+    }),
+    [iconBucket]
   );
 
-  // return (
-  //   <div className="border border-black-400 w-full h-96">
-  //     <span>portal box</span>
-  //   </div>
-  // );
+  useEffect(() => {}, [iconBucket]);
+
+  return (
+    <div className="border border-black-400 w-full h-96" ref={dropRef}>
+      <PortalWrapper />
+      {iconBucket.filter((i) => i === "enhanced-chat").length === 0 && node ? (
+        <portals.OutPortal node={node} />
+      ) : null}
+    </div>
+  );
 };
 
 export default PortalBox;

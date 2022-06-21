@@ -1,19 +1,24 @@
-import { atom, useAtom } from 'jotai';
-import React, { useState } from 'react';
-import Chat from '../widgets/chat';
-import Bar from './bar';
-import Box from './box';
-import PortalBox from './portal-box';
+import { atom, useAtom } from "jotai";
+import React, { Component, useState } from "react";
+import { HtmlPortalNode } from "react-reverse-portal";
+import Chat from "../widgets/chat";
+import Bar from "./bar";
+import Box from "./box";
+import PortalBox from "./portal-box";
 
 const mainBucket = atom<any[]>([
-  { id: '1', component: <Chat id="1" type="chat" key={1} /> },
+  { id: "1", component: <Chat id="1" type="chat" key={1} /> },
 ]);
+export const useMainBucket = () => useAtom(mainBucket);
 
 const barBucket = atom<any[]>([]);
-
 export const useBarBucket = () => useAtom(barBucket);
 
-export const useMainBucket = () => useAtom(mainBucket);
+const node = atom<HtmlPortalNode<Component<any>> | null>(null);
+export const useNode = () => useAtom(node);
+
+const iconBucket = atom<string[]>([]);
+export const useIconBucket = () => useAtom(iconBucket);
 
 const DragContainer = () => {
   return (
